@@ -1,0 +1,186 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: canes-api
+  name: canes-api
+  namespace: interstellar
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: canes-api
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        namespace: interstellar
+        app: canes-api
+    spec:
+      containers:
+        - env:
+            - name: APP_NAME
+              valueFrom:
+                configMapKeyRef:
+                  key: APP_NAME
+                  name: canes-api-config
+            - name: APP_ENV
+              valueFrom:
+                configMapKeyRef:
+                  key: APP_ENV
+                  name: canes-api-config
+            - name: APP_KEY
+              valueFrom:
+                configMapKeyRef:
+                  key: APP_KEY
+                  name: canes-api-config
+            - name: APP_DEBUG
+              valueFrom:
+                configMapKeyRef:
+                  key: APP_DEBUG
+                  name: canes-api-config
+            - name: APP_URL
+              valueFrom:
+                configMapKeyRef:
+                  key: APP_URL
+                  name: canes-api-config
+            - name: APP_TIMEZONE
+              valueFrom:
+                configMapKeyRef:
+                  key: APP_TIMEZONE
+                  name: canes-api-config
+            - name: LOG_CHANNEL
+              valueFrom:
+                configMapKeyRef:
+                  key: LOG_CHANNEL
+                  name: canes-api-config
+            - name: LOG_SLACK_WEBHOOK_URL
+              valueFrom:
+                configMapKeyRef:
+                  key: LOG_SLACK_WEBHOOK_URL
+                  name: canes-api-config
+            - name: DB_CONNECTION
+              valueFrom:
+                configMapKeyRef:
+                  key: DB_CONNECTION
+                  name: canes-api-config
+            - name: DB_HOST
+              valueFrom:
+                configMapKeyRef:
+                  key: DB_HOST
+                  name: canes-api-config
+            - name: DB_PORT
+              valueFrom:
+                configMapKeyRef:
+                  key: DB_PORT
+                  name: canes-api-config
+            - name: DB_DATABASE
+              valueFrom:
+                configMapKeyRef:
+                  key: DB_DATABASE
+                  name: canes-api-config
+            - name: DB_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  key: DB_USERNAME
+                  name: canes-api-secret
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: DB_PASSWORD
+                  name: canes-api-secret
+            - name: CACHE_DRIVER
+              valueFrom:
+                configMapKeyRef:
+                  key: CACHE_DRIVER
+                  name: canes-api-config
+            - name: QUEUE_CONNECTION
+              valueFrom:
+                configMapKeyRef:
+                  key: QUEUE_CONNECTION
+                  name: canes-api-config
+            - name: RABBITMQ_HOST
+              valueFrom:
+                secretKeyRef:
+                  key: RABBITMQ_HOST
+                  name: canes-api-secret
+            - name: RABBITMQ_PORT
+              valueFrom:
+                secretKeyRef:
+                  key: RABBITMQ_PORT
+                  name: canes-api-secret
+            - name: RABBITMQ_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  key: RABBITMQ_USERNAME
+                  name: canes-api-secret
+            - name: RABBITMQ_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: RABBITMQ_PASSWORD
+                  name: canes-api-secret
+            - name: RABBITMQ_QUEUE
+              valueFrom:
+                secretKeyRef:
+                  key: RABBITMQ_QUEUE
+                  name: canes-api-secret
+            - name: JWT_TTL
+              valueFrom:
+                configMapKeyRef:
+                  key: JWT_TTL
+                  name: canes-api-config
+            - name: JWT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  key: JWT_SECRET
+                  name: canes-api-secret
+            - name: MAIL_DRIVER
+              valueFrom:
+                secretKeyRef:
+                  key: MAIL_DRIVER
+                  name: canes-api-secret
+            - name: MAIL_HOST
+              valueFrom:
+                secretKeyRef:
+                  key: MAIL_HOST
+                  name: canes-api-secret
+            - name: MAIL_PORT
+              valueFrom:
+                secretKeyRef:
+                  key: MAIL_PORT
+                  name: canes-api-secret
+            - name: MAIL_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  key: MAIL_USERNAME
+                  name: canes-api-secret
+            - name: MAIL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: MAIL_PASSWORD
+                  name: canes-api-secret
+            - name: MAIL_ENCRYPTION
+              valueFrom:
+                secretKeyRef:
+                  key: MAIL_ENCRYPTION
+                  name: canes-api-secret
+            - name: MAIL_FROM_ADDRESS
+              valueFrom:
+                secretKeyRef:
+                  key: MAIL_FROM_ADDRESS
+                  name: canes-api-secret
+            - name: MAIL_FROM_NAME
+              valueFrom:
+                secretKeyRef:
+                  key: MAIL_FROM_NAME
+                  name: canes-api-secret
+          image: 172.22.4.25:5000/canes-api
+          imagePullPolicy: IfNotPresent
+          name: canes-api
+          resources:
+            requests:
+              cpu: 50m
